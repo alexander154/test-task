@@ -1,0 +1,18 @@
+FROM php:7.4-apache
+
+RUN apt-get update -y && \
+apt-get clean -y && \
+docker-php-ext-install pdo pdo_mysql && \
+a2enmod rewrite
+
+COPY ./ /var/www
+
+RUN rm -rf /var/www/log
+RUN mkdir /var/www/log
+RUN chown 33:33 /var/www/log
+
+RUN rm -rf /var/www/tmp_mailing_data
+RUN mkdir /var/www/tmp_mailing_data
+RUN chown 33:33 /var/www/tmp_mailing_data
+
+RUN chown -R www-data:www-data /var/www

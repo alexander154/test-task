@@ -1,0 +1,7 @@
+/log/log_custom.txt
+/log/log_php_errors.txt
+.idea
+/composer.lock
+.git/
+.DS_Store/
+.bash_history

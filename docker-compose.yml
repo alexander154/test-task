@@ -1,0 +1,32 @@
+version: "3.9"
+name: test-task-mailing
+services:
+  php-apache:
+    ports:
+      - "127.0.0.1:30080:80"
+    build:
+      context: .
+      dockerfile: Dockerfile-PHP
+    user: "33:33"
+  mysql:
+    restart: always
+    command: --lower_case_table_names=0
+    image: mysql:8
+    user: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "YES"
+      MYSQL_DATABASE: "mydb"
+    volumes:
+      - ./dump.sql:/docker-entrypoint-initdb.d/0_init.sql
+  phpmyadmin:
+    image: phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "YES"
+    restart: always
+    ports:
+      - "127.0.0.1:30081:80"
